@@ -2,7 +2,7 @@
 
 # SniShaper
 
-[![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?style=flat-square&logo=go)](https://golang.org)
+[![Go Version](https://img.shields.io/badge/Go-1.24+-00ADD8?style=flat-square&logo=go)](https://golang.org)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)]()
 [![Wiki](https://img.shields.io/badge/Docs-Wiki-orange?style=flat-square)](https://github.com/coolapijust/snishaper/wiki)
 
@@ -65,7 +65,10 @@ npm run build
 cd ..
 
 # 一次性完成完整编译
-powershell -ExecutionPolicy Bypass -File .\scripts\build_windows.ps1
+powershell /scripts/build_windows.ps1
+
+## 或已有Powershell7
+pwsh /scripts/build_windows.ps1
 
 # Go主程序编译
 go build -ldflags="-s -w" -o "build/bin/snishaper.exe"
@@ -88,6 +91,7 @@ go build -ldflags="-s -w" -o "build/bin/snishaper.exe"
 
 本项目受益于以下优秀开源项目的启发：
 
+- [SNIBypassGUI](https://github.com/racpast/SNIBypassGUI/)
 - [DoH-ECH-Demo](https://github.com/0xCaner/DoH-ECH-Demo)
 - [lumine](https://github.com/moi-si/lumine)
 - [usque](https://github.com/Diniboy1123/usque)
