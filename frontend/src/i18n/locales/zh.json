@@ -1,0 +1,306 @@
+{
+  "common": {
+    "loading": "正在加载...",
+    "save": "保存",
+    "cancel": "取消",
+    "confirm": "确定",
+    "on": "开",
+    "off": "关",
+    "success": "成功",
+    "failed": "失败",
+    "status": "状态",
+    "view": "查看",
+    "edit": "编辑",
+    "delete": "删除",
+    "apply": "应用",
+    "enabled": "启用",
+    "disabled": "禁用",
+    "unknown": "未知",
+    "ready": "就绪",
+    "running": "运行中",
+    "stopped": "已停止",
+    "error": "错误"
+  },
+  "sidebar": {
+    "dashboard": "仪表盘",
+    "proxies": "代理节点",
+    "rules": "分流规则",
+    "routing": "自动分流",
+    "dns": "DNS 设置",
+    "logs": "实时日志",
+    "settings": "系统设置"
+  },
+  "welcome": {
+    "title": "欢迎使用 SniShaper",
+    "subtitle": "请选择您的首选语言以开始使用",
+    "select_language": "选择语言",
+    "start": "开始使用"
+  },
+  "dashboard": {
+    "title": "主页",
+    "proxy_start": "开启代理",
+    "proxy_stop": "停止代理",
+    "sys_proxy": "系统代理",
+    "tun_status": "TUN",
+    "core_status": "核心状态",
+    "run_status": "运行状态",
+    "work_mode": "工作模式",
+    "listen_port": "监听端口",
+    "realtime_traffic": "实时流量",
+    "download": "下载",
+    "upload": "上传",
+    "cert_status": "证书状态",
+    "cert_installed": "根证书已安装",
+    "cert_not_installed": "未安装根证书",
+    "path_pending": "路径待定",
+    "conn_info": "连接信息",
+    "install_cert": {
+      "title": "安装根证书",
+      "subtitle": "需安装证书以启用绕过功能",
+      "security_alert": "系统安全提示",
+      "security_desc": "安装时 Windows 会弹出安全警告确认窗，请点击“是”以继续完成配置。",
+      "installing": "正在安装...",
+      "install_now": "立即安装证书",
+      "remind_later": "稍后提醒我"
+    },
+    "notifications": {
+      "tun_not_running": "TUN 未进入运行态",
+      "tun_updated": "TUN 状态已更新",
+      "tun_failed": "TUN 切换失败"
+    }
+  },
+  "proxies": {
+    "title": "代理",
+    "server_node": "Server 节点",
+    "testing": "测试中...",
+    "test_conn": "测试连接",
+    "test_hint": "测试内置链路连通性 (绕过分流规则)",
+    "node_host": "节点 Host 名",
+    "auth_secret": "鉴权令牌 (AUTH_SECRET)",
+    "auth_placeholder": "输入服务端设置的密码",
+    "save_node": "保存节点配置",
+    "ech_management": "ECH 配置管理",
+    "add_ech": "添加配置",
+    "no_ech": "暂无 ECH 配置",
+    "auto_sync": "自动同步中",
+    "static_config": "静态配置",
+    "delete_confirm": "确定要删除此 ECH 配置吗？",
+    "edit_ech": "编辑 ECH 配置",
+    "probe_ech": "探测并创建 ECH 配置",
+    "modifying": "正在修改",
+    "probe_hint": "通过域名进行 DoH 探测获取 ECH 资源"
+  },
+  "ech_form": {
+    "title": "ECH 借力探测",
+    "subtitle": "输入目标域名，系统将通过 DoH 自动获取最新的 ECH 配置 (ECHConfigList)",
+    "probing": "探测中...",
+    "probe_failed": "探测失败: 未找到有效的 ECH 配置",
+    "probe_success": "已成功获取 ECH 配置片段",
+    "config_name": "配置名称",
+    "name_placeholder": "例如: Cloudflare 默认",
+    "discovery_domain": "探测域名 (Discovery Domain)",
+    "domain_placeholder": "例如: cloudflare.com",
+    "doh_source": "DoH 解析源",
+    "probe_and_resolve": "探测并解析",
+    "raw_content": "ECH 配置原始内容 (Raw Base64 / Hex)",
+    "raw_placeholder": "粘贴 ECHConfigList 或通过上方探测自动填入",
+    "auto_sync": "启用自动定期同步",
+    "auto_sync_hint": "开启后系统将定期重新探测该域名以更新配置"
+  },
+  "dns": {
+    "title": "安全 DNS",
+    "test_all": "全部测试",
+    "add_node": "添加节点",
+    "no_nodes": "暂无 DNS 节点",
+    "test": "测试",
+    "edit_node": "编辑 DNS 节点",
+    "delete_node": "删除 DNS 节点",
+    "delete_hint": "移除后将不再使用该节点进行 DNS 解析。",
+    "delete_warning": "，删除后不可恢复。",
+    "node_name": "节点名称",
+    "doh_url": "DoH URL",
+    "sni_fake": "伪装 SNI (Frontend SNI)",
+    "bootstrap_ips": "静态 IP (Bootstrap)",
+    "cert_policy": "证书校验策略 (高级)",
+    "verify_mode": "验证模式",
+    "allow_unknown": "允许未知签发者",
+    "allow_names": "允许名称列表",
+    "allow_suffixes": "允许后缀列表",
+    "modes": {
+      "default": "默认",
+      "strict": "严格",
+      "names": "名称",
+      "suffixes": "后缀",
+      "spki": "SPKI",
+      "chain": "链路"
+    },
+    "mode_descs": {
+      "default": "按系统默认证书校验",
+      "strict": "严格校验真实域名",
+      "names": "允许指定证书名称",
+      "suffixes": "允许指定域名后缀",
+      "spki": "允许指定公钥指纹",
+      "chain": "只校验证书链"
+    },
+    "notifications": {
+      "updated": "DNS 节点已更新",
+      "added": "DNS 节点已添加",
+      "deleted": "DNS 节点已删除"
+    }
+  },
+  "rules": {
+    "title": "网站规则",
+    "add_rule": "添加规则",
+    "search_placeholder": "搜索规则、分类或域名...",
+    "no_results": "未找到结果",
+    "edit_rule": "编辑规则配置",
+    "create_rule": "创建新规则",
+    "delete_rule": "删除规则",
+    "delete_hint": "这会立刻从当前规则集中移除该条目。",
+    "delete_warning": "，删除后不会自动恢复。",
+    "copy_success": "配置已复制",
+    "copy_hint": "现在可以直接粘贴分享。",
+    "form": {
+      "name": "描述名称",
+      "name_placeholder": "例如: Google 服务",
+      "website": "网站分组 (Website)",
+      "mode": "代理模式",
+      "domains": "匹配域名清单 (支持通配符)",
+      "domain_placeholder": "输入域名后按回车，支持批量空格或逗号分割...",
+      "no_domains": "尚未添加任何匹配域名",
+      "advanced_show": "展开高级设置",
+      "advanced_hide": "折叠高级设置",
+      "upstream": "上游服务器 (Upstream)",
+      "upstream_placeholder": "留空直连，或填写 1.2.3.4:443",
+      "dns_policy": "DNS 解析策略",
+      "ech_auto": "自动",
+      "ech_auto_hint": "无固定配置，按 DoH 自动回退",
+      "enable_rule": "开启规则",
+      "enable_hint": "关闭后本规则不参与匹配",
+      "ech_enable": "ECH 加密",
+      "ech_hint": "启用后尝试使用 ECH 连接",
+      "cf_pool": "优选 IP 池",
+      "cf_pool_hint": "优先使用 Cloudflare 优选 IP"
+    },
+    "modes": {
+      "mitm": "修改 SNI 或注入 ECH 配置",
+      "server": "连接上游反代",
+      "tls-rf": "TLS 分片",
+      "quic": "QUIC 分片混淆",
+      "transparent": "不解密 TLS，仅透传"
+    },
+    "dns_options": {
+      "prefer_ipv4": "IPv4 优先",
+      "prefer_ipv6": "IPv6 优先",
+      "ipv4_only": "仅 IPv4",
+      "ipv6_only": "仅 IPv6"
+    },
+    "display": {
+      "transparent": "透传",
+      "direct": "直连",
+      "fragment": "分片"
+    },
+    "notifications": {
+      "deleted": "规则已删除"
+    }
+  },
+  "logs": {
+    "title": "系统日志",
+    "capture": "捕捉日志",
+    "stop_capture": "停止捕捉",
+    "resume": "继续刷新",
+    "pause": "暂停刷新",
+    "scroll_top": "回到顶部",
+    "clear": "清空日志",
+    "search_placeholder": "搜索关键词、域、错误代码...",
+    "capture_hint": "日志采集默认关闭。点击右上角“捕捉日志”后，页面会开始临时收集并自动滚动到最新日志。",
+    "no_logs": "暂无日志采集"
+  },
+  "routing": {
+    "title": "自动分流",
+    "traffic_flow": "流量流向",
+    "waiting_traffic": "等待流量中...",
+    "strategy": "自动分流策略",
+    "mode_switch": "分流模式切换",
+    "modes": {
+      "off": "关闭",
+      "smart": "智能",
+      "server": "Server"
+    },
+    "gfwlist_check": "GFWList 状态检测",
+    "preloaded": "已预加载 {count} 条路由规则",
+    "inactive": "规则源未激活",
+    "update_list": "更新规则列表",
+    "save_apply": "应用并保存设置",
+    "features": "功能说明",
+    "feature_smart": "智能模式",
+    "feature_smart_desc": "优先检测是否为 Cloudflare 站点，是则注入 ECH 优选 IP，否则走 TLS 分片躲避 SNI 阻断。",
+    "feature_priority": "优先级逻辑",
+    "feature_priority_desc": "手动定义的【规则】页面条目拥有最高优先级。若均未命中且分流开启，则走此处的自动逻辑。",
+    "notifications": {
+      "saved": "分流设置已保存",
+      "saved_desc": "新的自动分流策略已经应用。",
+      "updated": "规则源已更新",
+      "updated_desc": "当前已加载 {count} 条自动分流规则。"
+    }
+  },
+  "settings": {
+    "title": "系统设置",
+    "tabs": {
+      "general": "常规",
+      "proxy": "代理设置",
+      "network": "网络",
+      "security": "证书 & 安全",
+      "appearance": "语言与主题",
+      "startup": "启动与后台"
+    },
+    "language": {
+      "title": "界面语言",
+      "desc": "切换应用程序的显示语言。"
+    },
+    "appearance": {
+      "title": "外观模式",
+      "desc": "在亮色、暗色或跟随系统之间切换。",
+      "light": "亮色",
+      "dark": "暗色",
+      "system": "跟随系统"
+    },
+    "auto_start": {
+      "title": "开机自动启动",
+      "desc": "Windows 登录后自动在后台运行。"
+    },
+    "auto_proxy": {
+      "title": "启动时自动开启代理",
+      "desc": "应用程序启动后立即进入代理工作态。"
+    },
+    "show_main": {
+      "title": "启动时显示主界面",
+      "desc": "关闭后开机启动将仅在托盘运行，不弹出窗口。"
+    },
+    "min_to_tray": {
+      "title": "最小化到托盘",
+      "desc": "点击关闭按钮时，程序将隐藏到系统托盘而不退出。"
+    },
+    "http_port": "HTTP 代理端口",
+    "socks_port": "SOCKS5 代理端口",
+    "lan_sharing": {
+      "title": "局域网共享",
+      "desc": "允许局域网内的其他设备连接该代理。"
+    },
+    "tun_mode": {
+      "title": "TUN 模式",
+      "desc": "强制所有流量经过 TUN 网卡，实现全局代理。"
+    },
+    "ca_management": {
+      "title": "CA 证书管理",
+      "export": "导出根证书",
+      "reset": "重置根证书",
+      "reset_hint": "这将删除现有证书并生成新的，需要重新安装到系统。",
+      "reset_success": "重置成功",
+      "reset_success_desc": "已生成新的根证书，请重新安装。"
+    },
+    "cf_pool": {
+      "fetch_now": "更新 IP 池"
+    }
+  }
+}
