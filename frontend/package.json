@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
-    "@wailsio/runtime": "^3.0.0-alpha.74",
+    "@wailsio/runtime": "^3.0.0-alpha.95",
     "clsx": "^2.1.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
