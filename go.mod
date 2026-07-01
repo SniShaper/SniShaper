@@ -8,7 +8,7 @@ require (
 	github.com/refraction-networking/utls v1.8.2
 	github.com/things-go/go-socks5 v0.1.1
 	github.com/wailsapp/wails/v3 v3.0.0-alpha.74
-	golang.org/x/net v0.53.0
+	golang.org/x/net v0.56.0
 	golang.org/x/sys v0.46.0
 )
 
@@ -52,11 +52,11 @@ require (
 	github.com/skeema/knownhosts v1.3.2 // indirect
 	github.com/wailsapp/go-webview2 v1.0.23 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
-	golang.org/x/crypto v0.50.0 // indirect
-	golang.org/x/mod v0.34.0 // indirect
-	golang.org/x/sync v0.20.0 // indirect
-	golang.org/x/text v0.36.0 // indirect
-	golang.org/x/tools v0.43.0 // indirect
+	golang.org/x/crypto v0.53.0 // indirect
+	golang.org/x/mod v0.36.0 // indirect
+	golang.org/x/sync v0.21.0 // indirect
+	golang.org/x/text v0.38.0 // indirect
+	golang.org/x/tools v0.45.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
 
