@@ -4,7 +4,7 @@ go 1.25.5
 
 require (
 	github.com/miekg/dns v1.1.72
-	github.com/quic-go/quic-go v0.59.0
+	github.com/quic-go/quic-go v0.59.1
 	github.com/refraction-networking/utls v1.8.2
 	github.com/things-go/go-socks5 v0.1.1
 	github.com/wailsapp/wails/v3 v3.0.0-alpha.74
@@ -27,8 +27,8 @@ require (
 	github.com/ebitengine/purego v0.9.1 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
-	github.com/go-git/go-billy/v5 v5.8.0 // indirect
-	github.com/go-git/go-git/v5 v5.18.0 // indirect
+	github.com/go-git/go-billy/v5 v5.9.0 // indirect
+	github.com/go-git/go-git/v5 v5.19.1 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/godbus/dbus/v5 v5.2.2 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
