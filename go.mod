@@ -4,7 +4,7 @@ go 1.25.5
 
 require (
 	github.com/miekg/dns v1.1.72
-	github.com/quic-go/quic-go v0.59.0
+	github.com/quic-go/quic-go v0.59.1
 	github.com/refraction-networking/utls v1.8.2
 	github.com/things-go/go-socks5 v0.1.1
 	github.com/wailsapp/wails/v3 v3.0.0-alpha2.111
