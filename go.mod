@@ -7,7 +7,7 @@ require (
 	github.com/quic-go/quic-go v0.60.0
 	github.com/refraction-networking/utls v1.8.2
 	github.com/things-go/go-socks5 v0.1.1
-	github.com/wailsapp/wails/v3 v3.0.0-alpha2.112
+	github.com/wailsapp/wails/v3 v3.0.0-alpha2.115
 	golang.org/x/net v0.56.0
 	golang.org/x/sys v0.46.0
 )
@@ -23,7 +23,6 @@ require (
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
-	github.com/wailsapp/wails/webview2 v1.0.27 // indirect
 	golang.org/x/crypto v0.53.0 // indirect
 	golang.org/x/mod v0.36.0 // indirect
 	golang.org/x/sync v0.21.0 // indirect
