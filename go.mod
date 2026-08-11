@@ -10,7 +10,7 @@ require (
 	github.com/sagernet/sing-tun v0.8.11
 	github.com/things-go/go-socks5 v0.1.1
 	github.com/wailsapp/wails/v3 v3.0.0-alpha2.112
-	golang.org/x/sys v0.46.0
+	golang.org/x/sys v0.47.0
 )
 
 require (
