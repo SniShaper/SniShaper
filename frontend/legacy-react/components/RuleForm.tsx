@@ -16,7 +16,6 @@ import { alpha } from '@mui/material/styles';
 import { AddSiteGroup, UpdateSiteGroup, GetECHProfiles, GetNAT64Profiles } from '../api/bindings';
 import { useTranslation } from '../i18n/I18nContext';
 import { SettingsCtx } from '../App';
-import { toast } from '../lib/toast';
 
 interface RuleFormProps {
   initialData?: any;
@@ -162,18 +161,12 @@ const RuleForm: React.FC<RuleFormProps> = ({ initialData, onSuccess, onCancel })
         ? ''
         : String(formData.upstream || '').trim()
     };
-    try {
-      if (formData.id) {
-        await UpdateSiteGroup(payload);
-      } else {
-        await AddSiteGroup(payload);
-      }
-      toast.success(t('rules.notifications.save_success'));
-      onSuccess();
-    } catch (err: any) {
-      const detail = err && typeof err.message === 'string' && err.message ? err.message : err ? String(err) : '';
-      toast.error(t('rules.notifications.save_error'), detail || t('rules.notifications.save_error_hint'));
+    if (formData.id) {
+      await UpdateSiteGroup(payload);
+    } else {
+      await AddSiteGroup(payload);
     }
+    onSuccess();
   };
 
   const certVerifyMode = String(formData.cert_verify?.mode || '').trim();
@@ -288,9 +281,9 @@ const RuleForm: React.FC<RuleFormProps> = ({ initialData, onSuccess, onCancel })
               <Box key={m.id} onClick={() => setFormData({ ...formData, mode: m.id })} sx={{ position: 'relative', overflow: 'hidden', ...cardSx(active) }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Box component="span" sx={{ display: 'inline-flex', color: active ? 'primary.main' : 'text.secondary' }}>{m.icon}</Box>
-                  <Typography variant="caption" sx={{ fontSize: 12, fontWeight: 900, color: active ? 'primary.main' : 'text.primary', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>{m.label}</Typography>
+                  <Typography variant="caption" sx={{ fontSize: 12, fontWeight: 900, color: active ? 'primary.main' : 'text.primary' }}>{m.label}</Typography>
                 </Box>
-                <Typography variant="caption" sx={{ fontSize: 9, color: 'text.secondary', fontWeight: 'medium', lineHeight: 1.4, overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%' }}>{m.desc}</Typography>
+                <Typography variant="caption" sx={{ fontSize: 9, color: 'text.secondary', fontWeight: 'medium', lineHeight: 1.4 }}>{m.desc}</Typography>
                 {active && (
                   <Box component="span" sx={{ position: 'absolute', right: -8, bottom: -8, opacity: 0.1, color: 'primary.main', transform: 'rotate(12deg)', display: 'inline-flex' }}>{m.icon}</Box>
                 )}
@@ -368,7 +361,7 @@ const RuleForm: React.FC<RuleFormProps> = ({ initialData, onSuccess, onCancel })
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75 }}>
               <Typography variant="caption" sx={sectionLabelSx}>{t('rules.form.dns_policy')}</Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1 }}>
+              <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1 }}>
                 {DNS_OPTIONS.map((option) => {
                   const active = String(formData.dns_mode || '') === option.id;
                   const disabled = !ipv6Available && ipv6Option(option.id);
@@ -450,16 +443,16 @@ const RuleForm: React.FC<RuleFormProps> = ({ initialData, onSuccess, onCancel })
 
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 1.5, p: 2, bgcolor: 'background.paper', border: 1, borderColor: 'divider', borderRadius: 2 }}>
             <Box onClick={() => toggleBooleanField('enabled')} sx={cardSx(formData.enabled, { row: true, inactiveBg: 'action.hover' })}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, minWidth: 0 }}>
-                <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'text.primary', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%', py: 0.25 }}>{t('rules.form.enable_rule')}</Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'text.primary' }}>{t('rules.form.enable_rule')}</Typography>
                 <Typography variant="caption" sx={{ fontSize: 10, color: 'text.secondary' }}>{t('rules.form.enable_hint')}</Typography>
               </Box>
               <Switch size="small" checked={Boolean(formData.enabled)} />
             </Box>
             {showEchConfig && (
               <Box onClick={() => toggleBooleanField('ech_enabled')} sx={cardSx(formData.ech_enabled, { row: true, inactiveBg: 'action.hover' })}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, minWidth: 0 }}>
-                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'text.primary', display: 'flex', alignItems: 'center', gap: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%', py: 0.25 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'text.primary', display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <Box component="span" sx={{ display: 'inline-flex', color: '#06b6d4' }}><Lock size={12} /></Box>
                     {t('rules.form.ech_enable')}
                   </Typography>
@@ -470,8 +463,8 @@ const RuleForm: React.FC<RuleFormProps> = ({ initialData, onSuccess, onCancel })
             )}
             {showNat64Config && (
               <Box onClick={() => ipv6Available && toggleBooleanField('nat64_enabled')} sx={cardSx(formData.nat64_enabled, { row: true, inactiveBg: 'action.hover', disabled: !ipv6Available })}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, minWidth: 0 }}>
-                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'text.primary', display: 'flex', alignItems: 'center', gap: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%', py: 0.25 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'text.primary', display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <Box component="span" sx={{ display: 'inline-flex', color: 'secondary.main' }}><Globe size={12} /></Box>
                     {t('rules.form.nat64_enable')}
                   </Typography>
@@ -482,8 +475,8 @@ const RuleForm: React.FC<RuleFormProps> = ({ initialData, onSuccess, onCancel })
             )}
             {showCfPool && (
               <Box onClick={() => toggleBooleanField('use_cf_pool')} sx={cardSx(formData.use_cf_pool, { row: true, inactiveBg: 'action.hover' })}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, minWidth: 0 }}>
-                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'text.primary', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%', py: 0.25 }}>{t('rules.form.cf_pool')}</Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'text.primary' }}>{t('rules.form.cf_pool')}</Typography>
                   <Typography variant="caption" sx={{ fontSize: 10, color: 'text.secondary' }}>{t('rules.form.cf_pool_hint')}</Typography>
                 </Box>
                 <Switch size="small" checked={Boolean(formData.use_cf_pool)} />
@@ -513,8 +506,8 @@ const RuleForm: React.FC<RuleFormProps> = ({ initialData, onSuccess, onCancel })
               </Box>
 
               <Box onClick={() => setCertVerify({ allow_unknown_authority: !formData.cert_verify.allow_unknown_authority })} sx={cardSx(Boolean(formData.cert_verify.allow_unknown_authority), { warn: true, row: true, inactiveBg: 'action.hover' })}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, minWidth: 0 }}>
-                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'text.primary', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%', py: 0.25 }}>{t('dns.allow_unknown')}</Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                  <Typography variant="caption" sx={{ fontWeight: 'bold', color: 'text.primary' }}>{t('dns.allow_unknown')}</Typography>
                   <Typography variant="caption" sx={{ fontSize: 10, color: 'text.secondary' }}>{t('rules.form.cert_verify_warn')}</Typography>
                 </Box>
                 <Switch size="small" color="warning" checked={Boolean(formData.cert_verify.allow_unknown_authority)} />

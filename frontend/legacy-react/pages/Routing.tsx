@@ -99,15 +99,8 @@ const Routing: React.FC = () => {
   };
 
   return (
-    <Box sx={{ pt: 4, pb: 6, width: '100%', display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'flex-end' }, gap: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Box sx={{ p: 1.25, borderRadius: 1.5, border: 1, color: 'primary.main', bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1), borderColor: (theme) => alpha(theme.palette.primary.main, 0.1), display: 'flex' }}>
-            <Activity size={20} />
-          </Box>
-          <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>{t('routing.title')}</Typography>
-        </Box>
-      </Box>
+    <Box sx={{ pt: 4, pb: 6, px: 3, maxWidth: '5xl', mx: 'auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>{t('routing.title')}</Typography>
 
       <Box sx={{ bgcolor: 'background.paper', border: 1, borderColor: 'divider', borderRadius: 2, overflow: 'hidden', display: 'flex', flexDirection: 'column', height: 340 }}>
         <Box sx={{ px: 3, py: 2, borderBottom: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -126,9 +119,9 @@ const Routing: React.FC = () => {
             {flows.map((flow) => (
                 <Box
                     key={flow.id}
-                    sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1.5, py: 0.75, bgcolor: 'action.hover', border: 1, borderColor: 'divider', borderRadius: '999px', boxShadow: 1, minWidth: 0 }}
+                    sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1.5, py: 0.75, bgcolor: 'action.hover', border: 1, borderColor: 'divider', borderRadius: '999px', boxShadow: 1 }}
                 >
-                    <Typography variant="caption" sx={{ fontWeight: 700, maxWidth: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', py: 0.25, outline: '1px solid transparent' }} title={flow.domain}>
+                    <Typography variant="caption" sx={{ fontWeight: 700, maxWidth: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={flow.domain}>
                         {flow.domain}
                     </Typography>
                     <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.625rem' }}>➔</Typography>
@@ -140,7 +133,7 @@ const Routing: React.FC = () => {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr', xl: 'repeat(3, 1fr)' }, gap: 4 }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' }, gap: 4 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 0.5 }}>
                 <Box sx={{ display: 'inline-flex', color: 'primary.main' }}><Workflow size={18} /></Box>
@@ -180,9 +173,9 @@ const Routing: React.FC = () => {
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: 1, borderColor: 'divider', pt: 2 }}>
-                    <Box sx={{ minWidth: 0 }}>
-                        <Typography variant="body2" sx={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t('routing.gfwlist_check')}</Typography>
-                        <Typography variant="caption" sx={{ fontSize: '0.6875rem', color: 'text.secondary', display: 'block', mt: 0.25, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <Box>
+                        <Typography variant="body2" sx={{ fontWeight: 700 }}>{t('routing.gfwlist_check')}</Typography>
+                        <Typography variant="caption" sx={{ fontSize: '0.6875rem', color: 'text.secondary', display: 'block', mt: 0.25 }}>
                             {status.enabled ? t('routing.preloaded', { count: status.domain_count }) : t('routing.inactive')}
                         </Typography>
                     </Box>

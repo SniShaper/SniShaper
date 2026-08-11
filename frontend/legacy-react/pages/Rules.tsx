@@ -57,11 +57,11 @@ const RuleItem: React.FC<{ group: any; onEdit: (group: any) => void; onDelete: (
   const modeKey = normalizeMode(group?.mode) || normalizeMode(effectiveMode);
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 1.5, px: 3, bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', transition: 'background-color 0.2s', '&:hover': { bgcolor: 'action.hover' }, minWidth: 0 }}>
-      <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
-        <Box sx={{ width: { xs: '100%', md: '33%' }, minWidth: 0, flexShrink: 0 }}>
-          <Typography variant="body2" sx={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%', py: 0.25, outline: '1px solid transparent' }}>{group.name || t('common.unknown')}</Typography>
-          <Typography variant="caption" sx={{ fontSize: 10, color: 'text.secondary', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%', py: 0.25, outline: '1px solid transparent' }}>{group.website || t('rules.display.default_group')}</Typography>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 1.5, px: 3, bgcolor: 'background.paper', borderBottom: 1, borderColor: 'divider', transition: 'background-color 0.2s', '&:hover': { bgcolor: 'action.hover' } }}>
+      <Box sx={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 3 }}>
+        <Box sx={{ width: '33%', minWidth: 0 }}>
+          <Typography variant="body2" sx={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{group.name || t('common.unknown')}</Typography>
+          <Typography variant="caption" sx={{ fontSize: 10, color: 'text.secondary', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{group.website || t('rules.display.default_group')}</Typography>
         </Box>
         <Box sx={{ flex: 1, minWidth: 0, display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1, overflow: 'hidden' }}>
           {(group.domains || []).slice(0, 4).map((d: string, i: number) => (
@@ -74,14 +74,14 @@ const RuleItem: React.FC<{ group: any; onEdit: (group: any) => void; onDelete: (
       </Box>
 
       <Box sx={{ width: 128, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', px: 1.5, borderRight: 1, borderColor: 'divider', mr: 1 }}>
-        <Typography variant="caption" sx={{ fontSize: 10, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', color: modeColors[modeKey] || 'text.secondary', py: 0.25, outline: '1px solid transparent' }}>
+        <Typography variant="caption" sx={{ fontSize: 10, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', color: modeColors[modeKey] || 'text.secondary' }}>
           {getModeDisplay(effectiveMode)}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.25, color: 'text.secondary', maxWidth: '100%', minWidth: 0 }}>
           <Box component="span" sx={{ color: 'success.main', display: 'inline-flex', flexShrink: 0 }}>
             <Activity size={10} aria-hidden />
           </Box>
-          <Typography variant="caption" sx={{ fontSize: 10, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'uppercase', maxWidth: '100%', py: 0.25, outline: '1px solid transparent' }}>{getEffectiveUpstream(group)}</Typography>
+          <Typography variant="caption" sx={{ fontSize: 10, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textTransform: 'uppercase' }}>{getEffectiveUpstream(group)}</Typography>
         </Box>
       </Box>
 
@@ -130,15 +130,10 @@ const Rules: React.FC = () => {
 
   const handleDeleteConfirm = async () => {
     if (!pendingDeleteGroup?.id) return;
-    try {
-      await DeleteSiteGroup(pendingDeleteGroup.id);
-      setPendingDeleteGroup(null);
-      await loadData();
-      toast.success(t('rules.notifications.deleted'));
-    } catch (err: any) {
-      const detail = err && typeof err.message === 'string' && err.message ? err.message : err ? String(err) : '';
-      toast.error(t('rules.notifications.delete_error'), detail || t('rules.notifications.save_error_hint'));
-    }
+    await DeleteSiteGroup(pendingDeleteGroup.id);
+    setPendingDeleteGroup(null);
+    await loadData();
+    toast.success(t('rules.notifications.deleted'));
   };
 
   const OTHERS_KEY = 'Others';
@@ -164,14 +159,9 @@ const Rules: React.FC = () => {
   }, [groups, search, filterMode]);
 
   return (
-    <Box sx={{ pt: 4, pb: 6, width: '100%' }}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'flex-end' }, gap: 2, mb: 6 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Box sx={{ p: 1.25, borderRadius: 1.5, border: 1, color: 'primary.main', bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1), borderColor: (theme) => alpha(theme.palette.primary.main, 0.1), display: 'flex' }}>
-            <Filter size={20} />
-          </Box>
-          <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>{t('rules.title')}</Typography>
-        </Box>
+    <Box sx={{ pt: 4, pb: 6, maxWidth: '5xl', mx: 'auto' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 1.5, bgcolor: 'background.paper', border: 1, borderColor: 'divider', p: 2.5, borderRadius: 2 }}>
+        <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>{t('rules.title')}</Typography>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Button onClick={handleExport} variant="outlined" size="small" aria-label={t('rules.export_aria')} sx={{ minWidth: 0, px: 1 }}>
             <OpenInNew size={16} />
@@ -182,8 +172,8 @@ const Rules: React.FC = () => {
         </Box>
       </Box>
 
-      <Box sx={{ position: 'sticky', top: 0, zIndex: 10, py: 1, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-        <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75, p: 0.5, border: 1, borderColor: 'divider', borderRadius: 2, width: 'fit-content', flexWrap: 'wrap', minWidth: 0 }} role="tablist" aria-label={t('rules.filter_mode_aria')}>
+      <Box sx={{ position: 'sticky', top: 0, zIndex: 10, py: 1, display: 'flex', flexDirection: 'column', gap: 1.5, bgcolor: 'background.default' }}>
+        <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75, p: 0.5, border: 1, borderColor: 'divider', borderRadius: 2, width: 'fit-content', flexWrap: 'wrap' }} role="tablist" aria-label={t('rules.filter_mode_aria')}>
           {FILTER_MODES.map((m) => {
             const active = filterMode === m;
             return (

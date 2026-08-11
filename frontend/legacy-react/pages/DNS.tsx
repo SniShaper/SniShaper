@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Plus, Antenna, Edit3, Trash2, ChevronUp, ChevronDown,
-  Zap, CheckCircle2, Shield, Globe, AlertCircle
+  Zap, CheckCircle2, Loader2, Shield, Globe, AlertCircle
 } from '../lib/icons';
 import {
   GetDNSNodes, AddDNSNode, UpdateDNSNode, DeleteDNSNode,
@@ -11,7 +11,6 @@ import Modal from '../components/Modal';
 import { toast } from '../lib/toast';
 import { splitListInput, joinListInput } from '../lib/utils';
 import { useTranslation } from '../i18n/I18nContext';
-import AnimatedIcon from '../lib/animated-icon';
 import {
   Box, Typography, Button, IconButton, TextField, Switch,
 } from '@mui/material';
@@ -53,7 +52,7 @@ const DNSNodeItem: React.FC<{
   if (node.cert_verify?.allow_unknown_authority) tags.push({ label: t('dns.allow_unknown'), color: 'error.main', bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.2)' });
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 1.5, px: 2, borderBottom: 1, borderColor: 'divider', transition: 'background-color 0.2s', '&:hover': { bgcolor: 'action.hover' }, minWidth: 0 }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 1.5, px: 2, borderBottom: 1, borderColor: 'divider', transition: 'background-color 0.2s', '&:hover': { bgcolor: 'action.hover' } }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.25, flexShrink: 0 }}>
         <IconButton size="small" aria-label={t('dns.move_up')} onClick={() => onMoveUp(node.id, index)} disabled={index === 0} sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' }, '&.Mui-disabled': { opacity: 0.2 } }}>
           <ChevronUp size={14} />
@@ -67,9 +66,9 @@ const DNSNodeItem: React.FC<{
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Box sx={{ width: 8, height: 8, borderRadius: '50%', flexShrink: 0, bgcolor: node.enabled ? 'success.main' : 'text.disabled', boxShadow: node.enabled ? '0 0 6px rgba(34,197,94,0.4)' : 'none' }} />
-          <Typography variant="body2" sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%', py: 0.25, outline: '1px solid transparent' }}>{node.name || t('common.unknown')}</Typography>
+          <Typography variant="body2" sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{node.name || t('common.unknown')}</Typography>
         </Box>
-        <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace', display: 'block', mt: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>{node.url}</Typography>
+        <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace', display: 'block', mt: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{node.url}</Typography>
         {tags.length > 0 && (
           <Box sx={{ display: 'flex', gap: 0.75, mt: 0.75, flexWrap: 'wrap' }}>
             {tags.map((tag, i) => (
@@ -93,7 +92,7 @@ const DNSNodeItem: React.FC<{
       <Box sx={{ flexShrink: 0, width: 112, display: 'flex', justifyContent: 'flex-end' }}>
         {isTesting ? (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, color: 'primary.main' }}>
-            <AnimatedIcon icon="svg-spinners:pulse" width={14} />
+            <Loader2 size={14} />
             <Typography variant="caption" sx={{ fontWeight: 'bold' }}>{t('dns.test')}...</Typography>
           </Box>
         ) : testResult ? (
@@ -157,7 +156,7 @@ const DNSNodeForm: React.FC<{ initialData?: DNSNode | null; onSubmit: (data: any
   return (
     <form id="dns-form" onSubmit={handleSubmit}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr', xl: 'repeat(3, 1fr)' }, gap: 3 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Typography variant="caption" sx={{ fontWeight: 900, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, mr: 0.5 }}>
@@ -178,7 +177,7 @@ const DNSNodeForm: React.FC<{ initialData?: DNSNode | null; onSubmit: (data: any
           </Box>
         </Box>
 
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr', xl: 'repeat(3, 1fr)' }, gap: 3 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Typography variant="caption" sx={{ fontWeight: 900, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{t('dns.sni_fake')}</Typography>
             <TextField type="text" size="small" value={form.sni || ''} onChange={e => setForm({ ...form, sni: e.target.value })} sx={inputSx} />
@@ -195,9 +194,9 @@ const DNSNodeForm: React.FC<{ initialData?: DNSNode | null; onSubmit: (data: any
             { label: 'ECH', field: 'ech_enabled' },
             { label: 'QUIC', field: 'quic' },
           ].map(({ label, field }) => (
-            <Box key={field} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderRadius: 2, border: 1, borderColor: 'divider', px: 2, py: 1.5, cursor: 'pointer', '&:hover': { borderColor: 'primary.main' }, transition: 'all 0.2s', minWidth: 0 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%', py: 0.25, outline: '1px solid transparent' }}>{label}</Typography>
-              <Switch size="small" checked={Boolean(form[field])} onChange={(e) => setForm({ ...form, [field]: e.target.checked })} sx={{ flexShrink: 0 }} />
+            <Box key={field} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderRadius: 2, border: 1, borderColor: 'divider', px: 2, py: 1.5, cursor: 'pointer', '&:hover': { borderColor: 'primary.main' }, transition: 'all 0.2s' }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold' }}>{label}</Typography>
+              <Switch size="small" checked={Boolean(form[field])} onChange={(e) => setForm({ ...form, [field]: e.target.checked })} />
             </Box>
           ))}
         </Box>
@@ -237,9 +236,9 @@ const DNSNodeForm: React.FC<{ initialData?: DNSNode | null; onSubmit: (data: any
               </Box>
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderRadius: 2, border: 1, px: 2, py: 1.5, transition: 'all 0.2s', cursor: 'pointer', bgcolor: form.cert_verify?.allow_unknown_authority ? 'rgba(210,153,34,0.1)' : 'action.hover', borderColor: form.cert_verify?.allow_unknown_authority ? 'warning.main' : 'divider', '&:hover': { borderColor: 'warning.main' }, minWidth: 0 }}>
-              <Typography variant="caption" sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%', py: 0.25, outline: '1px solid transparent' }}>{t('dns.allow_unknown')}</Typography>
-              <Switch size="small" checked={Boolean(form.cert_verify?.allow_unknown_authority)} onChange={(e) => setForm({ ...form, cert_verify: { ...form.cert_verify, allow_unknown_authority: e.target.checked } })} color="warning" sx={{ flexShrink: 0 }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderRadius: 2, border: 1, px: 2, py: 1.5, transition: 'all 0.2s', cursor: 'pointer', bgcolor: form.cert_verify?.allow_unknown_authority ? 'rgba(210,153,34,0.1)' : 'action.hover', borderColor: form.cert_verify?.allow_unknown_authority ? 'warning.main' : 'divider', '&:hover': { borderColor: 'warning.main' } }}>
+              <Typography variant="caption" sx={{ fontWeight: 'bold' }}>{t('dns.allow_unknown')}</Typography>
+              <Switch size="small" checked={Boolean(form.cert_verify?.allow_unknown_authority)} onChange={(e) => setForm({ ...form, cert_verify: { ...form.cert_verify, allow_unknown_authority: e.target.checked } })} color="warning" />
             </Box>
 
             {(form.cert_verify?.mode === 'allow_names') && (
@@ -305,21 +304,16 @@ const DNS: React.FC = () => {
   const handleTestAll = async () => { for (const node of nodes) { void handleTest(node.id); } };
 
   return (
-    <Box sx={{ pt: 4, pb: 6, width: '100%' }}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'flex-end' }, gap: 2, mb: 6 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Box sx={{ p: 1.25, borderRadius: 1.5, border: 1, color: 'primary.main', bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1), borderColor: (theme) => alpha(theme.palette.primary.main, 0.1), display: 'flex' }}>
-            <Antenna size={20} />
-          </Box>
-          <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>{t('dns.title')}</Typography>
-        </Box>
+    <Box sx={{ pt: 4, pb: 6, maxWidth: '5xl', mx: 'auto' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 1.5, bgcolor: 'background.paper', border: 1, borderColor: 'divider', p: 2.5, borderRadius: 2 }}>
+        <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>{t('dns.title')}</Typography>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Button onClick={handleTestAll} variant="outlined" size="small" startIcon={<Zap size={14} />}>{t('dns.test_all')}</Button>
           <Button onClick={handleAdd} variant="contained" color="primary" size="small" startIcon={<Plus size={16} strokeWidth={3} />}>{t('dns.add_node')}</Button>
         </Box>
       </Box>
 
-      <Box sx={{ border: 1, borderColor: 'divider', borderRadius: 2, overflow: 'hidden', bgcolor: 'background.paper' }}>
+      <Box sx={{ border: 1, borderColor: 'divider', borderRadius: 2, overflow: 'hidden', bgcolor: 'background.paper', mt: 4 }}>
         {nodes.length === 0 ? (
           <Box sx={{ py: 12, color: 'text.secondary', opacity: 0.5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Antenna size={48} strokeWidth={1} />

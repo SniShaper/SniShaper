@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-  Delete, Shield, Bolt, Lock, History, AddCircle, Public, Layers, AlertCircle
+  Delete, Shield, Bolt, Lock, History, AddCircle, Public, Layers, Error as ErrorIcon
 } from '../lib/icons';
 import {
   GetECHProfiles, DeleteECHProfile, GetNAT64Profiles, DeleteNAT64Profile, TestNAT64Profile,
   GetMigrationServer, SetMigrationServer, TestMigration
 } from '../api/bindings';
 import {
-  Box, Typography, Button, IconButton, TextField, Grid, useColorScheme,
+  Box, Typography, Button, IconButton, TextField, Grid,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import Modal from '../components/Modal';
@@ -19,7 +19,6 @@ import { SettingsCtx } from '../App';
 
 const Proxies: React.FC = () => {
   const { t } = useTranslation();
-  const { mode } = useColorScheme();
   const { cache } = useContext(SettingsCtx);
   const ipv6Available = cache.ipv6Available !== false;
   const [echProfiles, setEchProfiles] = useState<any[]>([]);
@@ -122,17 +121,10 @@ const Proxies: React.FC = () => {
     : { cursor: 'default' };
 
   return (
-    <Box sx={{ pt: 4, pb: 6, width: '100%' }}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'flex-end' }, gap: 2, mb: 6 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Box sx={{ p: 1.25, borderRadius: 1.5, border: 1, color: 'primary.main', bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1), borderColor: (theme) => alpha(theme.palette.primary.main, 0.1), display: 'flex' }}>
-            <Shield size={20} />
-          </Box>
-          <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>{t('proxies.title')}</Typography>
-        </Box>
-      </Box>
+    <Box sx={{ pt: 4, pb: 6, maxWidth: '5xl', mx: 'auto' }}>
+      <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>{t('proxies.title')}</Typography>
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ mt: 5, display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 0.5, color: 'text.secondary' }}>
           <Public size={18} aria-hidden />
           <Typography variant="body2" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -197,10 +189,10 @@ const Proxies: React.FC = () => {
                       <Bolt size={18} fill="currentColor" aria-hidden />
                     </Box>
                     <Box sx={{ minWidth: 0 }}>
-                      <Typography variant="body2" sx={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>{p.name}</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.25, color: 'text.secondary' }}>
                         <History size={10} aria-hidden />
-                        <Typography variant="caption" sx={{ fontSize: 10, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+                        <Typography variant="caption" sx={{ fontSize: 10, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {p.auto_update ? t('proxies.auto_sync') : t('proxies.static_config')}
                         </Typography>
                       </Box>
@@ -227,18 +219,18 @@ const Proxies: React.FC = () => {
             <Public size={18} aria-hidden />
             <Typography variant="body2" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('proxies.nat64_management')}</Typography>
           </Box>
-          <Button onClick={handleAddNAT64} variant="outlined" size="small" startIcon={<AddCircle size={14} />}>
+          <Button onClick={handleAddNAT64} disabled={!ipv6Available} variant="outlined" size="small" startIcon={<AddCircle size={14} />}>
             {t('proxies.add_nat64')}
           </Button>
         </Box>
 
         {!ipv6Available && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1.5, py: 1, borderRadius: 2, bgcolor: 'rgba(239,68,68,0.05)', border: 1, borderColor: 'rgba(239,68,68,0.3)', color: 'error.main', minWidth: 0 }}>
-              <AlertCircle size={14} aria-hidden />
-              <Typography variant="caption" sx={{ fontSize: 11, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', py: 0.25, outline: '1px solid transparent' }}>
-                {t('network.ipv6_disabled_title')}：{t('network.ipv6_disabled_desc')}
-              </Typography>
-            </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1.5, py: 1, borderRadius: 2, bgcolor: 'rgba(239,68,68,0.05)', border: 1, borderColor: 'rgba(239,68,68,0.3)', color: 'error.main' }}>
+            <ErrorIcon size={14} aria-hidden />
+            <Typography variant="caption" sx={{ fontSize: 11, fontWeight: 700 }}>
+              {t('network.ipv6_disabled_title')}：{t('network.ipv6_disabled_desc')}
+            </Typography>
+          </Box>
         )}
 
         <Grid container spacing={2}>
@@ -253,12 +245,12 @@ const Proxies: React.FC = () => {
             nat64Profiles.map((p) => (
               <Grid key={p.id} size={{ xs: 12, md: 6, xl: 4 }}>
                 <Box
-                  onClick={() => handleEditNAT64(p)}
+                  onClick={() => ipv6Available && handleEditNAT64(p)}
                   sx={{
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2,
                     p: 2.5, bgcolor: 'background.paper', border: 1, borderColor: 'divider', borderRadius: 2,
-                    boxShadow: 1, transition: 'all 0.2s',
-                    ...cardHoverSx(true),
+                    boxShadow: 1, transition: 'all 0.2s', opacity: ipv6Available ? 1 : 0.6,
+                    ...cardHoverSx(ipv6Available),
                   }}
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, minWidth: 0 }}>
@@ -266,10 +258,10 @@ const Proxies: React.FC = () => {
                       <Public size={18} aria-hidden />
                     </Box>
                     <Box sx={{ minWidth: 0 }}>
-                      <Typography variant="body2" sx={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>{p.name}</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mt: 0.25, color: 'text.secondary', minWidth: 0 }}>
                         <Layers size={10} aria-hidden />
-                        <Typography variant="caption" sx={{ fontSize: 10, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>
+                        <Typography variant="caption" sx={{ fontSize: 10, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           前缀：{p.prefix}
                         </Typography>
                       </Box>
@@ -292,7 +284,7 @@ const Proxies: React.FC = () => {
                     <Button
                       size="small"
                       variant="outlined"
-                      disabled={testingMap[p.id]}
+                      disabled={testingMap[p.id] || !ipv6Available}
                       onClick={(e) => handleTestNAT64(p, e)}
                       sx={{ fontSize: 10, fontWeight: 700, minWidth: 0, flexShrink: 0 }}
                     >
@@ -301,7 +293,8 @@ const Proxies: React.FC = () => {
                     <IconButton
                       size="small"
                       aria-label={t('proxies.delete_aria', { name: p.name })}
-                      onClick={(e) => handleDeleteNAT64(p.id, e)}
+                      disabled={!ipv6Available}
+                      onClick={(e) => ipv6Available && handleDeleteNAT64(p.id, e)}
                       sx={{ color: 'text.secondary', flexShrink: 0, '&:hover': { color: 'error.main', bgcolor: 'action.hover' } }}
                     >
                       <Delete size={16} />

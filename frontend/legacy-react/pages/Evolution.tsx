@@ -8,6 +8,7 @@ import {
   Shield,
   Public as NetworkIcon,
   Error as ErrorIcon,
+  Sync,
   CheckCircle,
   Cancel,
   ArrowForward,
@@ -27,9 +28,13 @@ import Modal from '../components/Modal';
 import { toast } from '../lib/toast';
 import { useTranslation } from '../i18n/I18nContext';
 import { SettingsCtx } from '../App';
-import AnimatedIcon from '../lib/animated-icon';
 import { Box, Typography, Button, TextField, Switch, LinearProgress } from '@mui/material';
 import { alpha, keyframes } from '@mui/material/styles';
+
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
 
 const shimmer = keyframes`
   0% { background-position: 0% 0%; }
@@ -260,70 +265,71 @@ const Evolution: React.FC = () => {
   const flowSteps = [t('evolution.steps.direct'), t('evolution.steps.tcping'), t('evolution.steps.domain_fronting'), t('evolution.steps.tls_fragment'), t('evolution.steps.ech'), t('evolution.steps.quic')];
 
   return (
-    <Box sx={{ pt: 4, pb: 6, width: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: { xs: 'flex-start', sm: 'flex-end' }, gap: 2, mb: 6 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Box sx={{ p: 1.25, borderRadius: 1.5, border: 1, color: 'primary.main', bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1), borderColor: (theme) => alpha(theme.palette.primary.main, 0.1), display: 'flex' }}>
-            <Bolt size={20} />
-          </Box>
-          <Box>
-            <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>{t('evolution.title')}</Typography>
-            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.25 }}>{t('evolution.subtitle')}</Typography>
-          </Box>
-        </Box>
-        {results.length > 0 && (
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.default' }}>
+      <Box sx={{ position: 'relative', mt: 3, px: 3, py: 2.5, maxWidth: '5xl', width: '100%', mx: 'auto', border: 1, borderColor: 'divider', borderRadius: 2, bgcolor: 'background.paper', overflow: 'hidden' }}>
+        <Box sx={{ position: 'absolute', inset: 0, background: (theme) => `radial-gradient(ellipse at top right, ${alpha(theme.palette.primary.main, 0.08)} 0%, transparent 60%)`, opacity: 0.3, pointerEvents: 'none' }} />
+        <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, px: 1.5, py: 0.75, borderRadius: 2, color: 'success.main', bgcolor: 'rgba(34,197,94,0.1)', border: 1, borderColor: 'rgba(34,197,94,0.2)' }}>
-              <CheckCircle size={14} />
-              <Typography variant="caption" sx={{ fontWeight: 900 }}>{successCount}</Typography>
+            <Box sx={{ p: 1.25, borderRadius: 1.5, border: 1, color: 'primary.main', bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1), borderColor: (theme) => alpha(theme.palette.primary.main, 0.1), display: 'flex' }}>
+              <Bolt size={20} />
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, px: 1.5, py: 0.75, borderRadius: 2, color: 'error.main', bgcolor: 'rgba(239,68,68,0.1)', border: 1, borderColor: 'rgba(239,68,68,0.2)' }}>
-              <Cancel size={14} />
-              <Typography variant="caption" sx={{ fontWeight: 900 }}>{failCount}</Typography>
+            <Box>
+              <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: '-0.02em' }}>{t('evolution.title')}</Typography>
+              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.25 }}>{t('evolution.subtitle')}</Typography>
             </Box>
           </Box>
-        )}
+          {results.length > 0 && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, px: 1.5, py: 0.75, borderRadius: 2, color: 'success.main', bgcolor: 'rgba(34,197,94,0.1)', border: 1, borderColor: 'rgba(34,197,94,0.2)' }}>
+                <CheckCircle size={14} />
+                <Typography variant="caption" sx={{ fontWeight: 900 }}>{successCount}</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, px: 1.5, py: 0.75, borderRadius: 2, color: 'error.main', bgcolor: 'rgba(239,68,68,0.1)', border: 1, borderColor: 'rgba(239,68,68,0.2)' }}>
+                <Cancel size={14} />
+                <Typography variant="caption" sx={{ fontWeight: 900 }}>{failCount}</Typography>
+              </Box>
+            </Box>
+          )}
+        </Box>
       </Box>
 
-      <Box sx={{ mb: 3, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-        {tabs.map((tab) => {
-          const active = activeTab === tab.id;
-          return (
-            <Button
-              key={tab.id}
-              size="small"
-              onClick={() => setActiveTab(tab.id)}
-              startIcon={tab.icon}
-              sx={{
-                px: 2,
-                py: 1,
-                borderRadius: 2.5,
-                fontWeight: 900,
-                fontSize: '0.875rem',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                transition: 'all 0.2s',
-                color: active ? 'primary.main' : 'text.secondary',
-                bgcolor: active ? (theme) => alpha(theme.palette.primary.main, 0.1) : 'transparent',
-                border: 1,
-                borderColor: active ? (theme) => alpha(theme.palette.primary.main, 0.2) : 'transparent',
-                '&:hover': active ? { bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1) } : { color: 'text.primary', bgcolor: 'action.hover' },
-              }}
-            >
-              {tab.label}
-              {tab.count !== undefined && tab.count > 0 && (
-                <Box component="span" sx={{ ml: 0.5, px: 0.75, py: 0.25, borderRadius: '999px', fontSize: 10, fontWeight: 900, minWidth: 18, textAlign: 'center', color: active ? 'primary.main' : 'text.secondary', bgcolor: active ? (theme) => alpha(theme.palette.primary.main, 0.2) : 'action.hover' }}>
-                  {tab.count}
-                </Box>
-              )}
-            </Button>
-          );
-        })}
+      <Box sx={{ mt: 1.5, px: 1.5, py: 1, maxWidth: '5xl', width: '100%', mx: 'auto', border: 1, borderColor: 'divider', borderRadius: 2, bgcolor: 'background.paper' }}>
+        <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+          {tabs.map((tab) => {
+            const active = activeTab === tab.id;
+            return (
+              <Button
+                key={tab.id}
+                size="small"
+                onClick={() => setActiveTab(tab.id)}
+                startIcon={tab.icon}
+                sx={{
+                  borderRadius: 2,
+                  fontWeight: 900,
+                  fontSize: '0.875rem',
+                  transition: 'all 0.2s',
+                  color: active ? 'primary.main' : 'text.secondary',
+                  bgcolor: active ? (theme) => alpha(theme.palette.primary.main, 0.1) : 'transparent',
+                  border: 1,
+                  borderColor: active ? (theme) => alpha(theme.palette.primary.main, 0.2) : 'transparent',
+                  '&:hover': active ? { bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1) } : { color: 'text.primary', bgcolor: 'action.hover' },
+                }}
+              >
+                {tab.label}
+                {tab.count !== undefined && tab.count > 0 && (
+                  <Box component="span" sx={{ ml: 0.5, px: 0.75, py: 0.25, borderRadius: '999px', fontSize: 10, fontWeight: 900, minWidth: 18, textAlign: 'center', color: active ? 'primary.main' : 'text.secondary', bgcolor: active ? (theme) => alpha(theme.palette.primary.main, 0.2) : 'action.hover' }}>
+                    {tab.count}
+                  </Box>
+                )}
+              </Button>
+            );
+          })}
+        </Box>
       </Box>
 
-      <Box sx={{ p: 3, width: '100%' }}>
-      <Box sx={{ display: activeTab === 'test' ? 'block' : 'none' }}>
+      <Box sx={{ flexGrow: 1, overflowY: 'auto', minHeight: 0 }}>
+        <Box sx={{ p: 3, maxWidth: '5xl', mx: 'auto' }}>
+          <Box sx={{ display: activeTab === 'test' ? 'block' : 'none' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
               <Box sx={{ p: 3, bgcolor: 'background.paper', border: 1, borderColor: 'divider', borderRadius: 2, boxShadow: 1, transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 3 } }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
@@ -367,7 +373,7 @@ const Evolution: React.FC = () => {
                         {t('evolution.stop_test')}
                       </Button>
                     ) : (
-                      <Button variant="contained" size="small" startIcon={isOperating ? <AnimatedIcon icon="line-md:loading-loop" width={16} /> : <Play size={16} />} onClick={handleStartTest} disabled={isOperating || domains.trim().length === 0} sx={{ fontWeight: 900, borderRadius: 1.5 }}>
+                      <Button variant="contained" size="small" startIcon={isOperating ? <Sync size={16} style={{ animation: `${spin} 1s linear infinite` }} /> : <Play size={16} />} onClick={handleStartTest} disabled={isOperating || domains.trim().length === 0} sx={{ fontWeight: 900, borderRadius: 1.5 }}>
                         {t('evolution.start_test')}
                       </Button>
                     )}
@@ -378,8 +384,8 @@ const Evolution: React.FC = () => {
                   <Box sx={{ mt: 2.5, pt: 2, borderTop: 1, borderColor: 'divider' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.25 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, color: 'text.secondary' }}>
-                        <Box sx={{ display: 'flex', color: 'primary.main' }}>
-                          <AnimatedIcon icon="line-md:loading-loop" width={14} />
+                        <Box sx={{ display: 'flex', color: 'primary.main', animation: `${spin} 1s linear infinite` }}>
+                          <Sync size={14} />
                         </Box>
                         <Typography variant="caption" sx={{ fontWeight: 900 }}>{t('evolution.test_progress')}</Typography>
                       </Box>
@@ -478,7 +484,7 @@ const Evolution: React.FC = () => {
                             </Box>
                             <Box sx={{ flex: 1, minWidth: 0 }}>
                               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <Typography variant="body2" sx={{ fontWeight: 900, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>{rule.name}</Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 900, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{rule.name}</Typography>
                                 <Typography variant="caption" sx={{ fontSize: 10, px: 1, py: 0.25, borderRadius: '999px', border: 1, fontWeight: 900, color: mc.color, bgcolor: mc.bg, borderColor: mc.border }}>
                                   {getMethodLabel(rule.method)}
                                 </Typography>
@@ -569,8 +575,8 @@ const Evolution: React.FC = () => {
                             </Box>
 
                             <Box sx={{ flex: 1, minWidth: 0 }}>
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap', minWidth: 0 }}>
-                                <Typography variant="body2" sx={{ fontWeight: 900, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%' }}>{result.domain}</Typography>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                                <Typography variant="body2" sx={{ fontWeight: 900 }}>{result.domain}</Typography>
                                 {result.reachable ? (
                                   <>
                                     <Typography variant="caption" sx={{ fontSize: 10, px: 1, py: 0.25, borderRadius: '999px', border: 1, fontWeight: 900, color: mc.color, bgcolor: mc.bg, borderColor: mc.border }}>
@@ -593,9 +599,9 @@ const Evolution: React.FC = () => {
                                   <>
                                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary' }}>
                                       <Timer size={12} />
-                                      <Typography variant="caption" color="text.secondary" sx={{ py: 0.25, outline: '1px solid transparent' }}>{t('evolution.delay', { ms: Math.round(result.delay / 1000000) })}</Typography>
+                                      <Typography variant="caption" color="text.secondary">{t('evolution.delay', { ms: Math.round(result.delay / 1000000) })}</Typography>
                                     </Box>
-                                    {result.best_ip && <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace', py: 0.25, outline: '1px solid transparent' }}>{result.best_ip}</Typography>}
+                                    {result.best_ip && <Typography variant="caption" color="text.secondary" sx={{ fontFamily: 'monospace' }}>{result.best_ip}</Typography>}
                                   </>
                                 ) : (
                                   result.error && <Typography variant="caption" sx={{ color: 'error.main' }}>{result.error}</Typography>
@@ -627,8 +633,9 @@ const Evolution: React.FC = () => {
                 </>
               )}
             </Box>
+          </Box>
         </Box>
-        </Box>
+      </Box>
 
       <Modal
         isOpen={showRuleModal}
