@@ -391,7 +391,7 @@ jobs:
           Get-ChildItem $assetsDir | ForEach-Object { Write-Host "  $($_.Name) ($($_.Length) bytes)" }
 
       - name: Upload Windows artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: windows-artifacts
           path: staging/
@@ -465,7 +465,7 @@ jobs:
           echo "::notice::$ARCHIVE ready"
 
       - name: Upload Linux artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: linux-artifacts
           path: snishaper-linux-amd64.tar.gz
@@ -552,7 +552,7 @@ jobs:
           Remove-Item -Force cli-smoke.exe
 
       - name: Upload CLI artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: cli-artifacts
           path: snishaper-cli-*.7z
